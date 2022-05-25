@@ -8,7 +8,7 @@
     <title></title>
 </head>
 <body>
-<nav class='light-blue darken-4'>
+<nav class='green darken-2'>
     <div class="nav-wrapper">
       <a href="#" class="brand-logo">Latienda</a>
       <ul id="nav-mobile" class="right hide-on-med-and-down">
@@ -20,12 +20,14 @@
   <div class="container">
   @yield('contenido')
   </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="{{asset('materialize/js/materialize.js')}}"></script>
   <script>
-     document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('select');
-    var instances = M.FormSelect.init(elems, []);
-  });
+     $(document).ready(function(){
+          $('ul.tabs').tabs();
+         $('ul.tabs').tabs('select_tab', 'tab_id');
+         $('select').formSelect();
+});
   </script>
 </body>
 </html>

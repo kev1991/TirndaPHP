@@ -17,7 +17,11 @@ class ProductoController extends Controller
      */
     public function index()
     {
-        echo "aqui va ir el catalogo de productos";
+            //seleccionar los poroductos en un arreglo
+        $productos = Producto::all();
+            //mostra vista del catalogo, llevaole los productos
+        return view("productos.index")
+            ->with('productos', $productos);
     }
 
     /**
@@ -46,8 +50,6 @@ class ProductoController extends Controller
     public function store(StoreProductoRequest $request)
     {
 
-
-        
         //validacion exitosa
            //crear una entidad <<producto>>
         $p = new producto();
@@ -56,24 +58,21 @@ class ProductoController extends Controller
         $p->precio=$request->precio;
         $p->marca_id=$request->marca;
         $p->categoria_id=$request->categoria;
+       
+        // objeto file
+        $archivo= $request->imagen;
+        $p-> imagen = $archivo->getClientOriginalName();
+        //ruta donde se almacena el achivo
+        $ruta =  public_path()."/img";
+        //movemos  archivo
+        $archivo -> move($ruta,
+                $archivo->getClientOriginalName());
+
+
         $p->save();
         //redirecionar: a una ruta disponible
         return redirect('productos/create')
-             ->with('mensaje' , "Producto registrado exitosamente");
-
-
-
-        //crear una entidad <<producto>>
-        /*$p = new producto();
-        $p->nombre=$request->nombre;
-        $p->descrpcion= $request->desc;
-        $p->precio=$request->precio;
-        $p->marca_id=$request->marca;
-        $p->categoria_id=$request->categoria;
-        $p->save();
-        //redirecionar: a una ruta disponible
-        return redirect('productos/create')
-             ->with('mensaje' , "Producto registrado exitosamente");*/
+             ->with('mensaje' , "Producto registrado exitosamente :3");
 
        
     }

@@ -7,7 +7,8 @@
   <div class="row">
     <form method="POST"
     action="{{url('productos')}}"
-   class="col s12">
+   class="col s12"
+   enctype="multipart/form-data">
    @csrf
    @if(session('mensaje'))
    <div class="row">
@@ -57,12 +58,13 @@
       <div class="row">
       <div class="file-field input-field col s8">
       <div class="btn">
-        <span>Imagen de Producto...</span>
+        <span>Imagen de Producto</span>
         <input type="file" name="imagen">
       </div>
       <div class="file-path-wrapper">
         <input class="file-path validate" type="text">
       </div>
+      <span>{{$errors->first('imagen') }}</span>
     </div>
     </div>
     <div class="row"> 
