@@ -4,6 +4,11 @@
 @section('contenido')
     <div class='row green'>
         <h1>Catalogo de producto</h1>
+        @if(session('mensajito'))
+            <div class="row">
+                <p>{{ session('mensajito') }} <a href=""></a></p>
+            </div>
+        @endif
     </div>  
     @php
         $tab1 = 4;
