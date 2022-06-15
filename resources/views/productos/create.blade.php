@@ -1,13 +1,15 @@
 @extends('layouts.principal')
 
 @section('contenido')
+
 <div class="row">
   <h1 class= "light-blue-text text-lighten-1">Nuevo Producto</h1>
   </div>
   <div class="row">
     <form method="POST"
     action="{{url('productos')}}"
-   class="col s12">
+   class="col s12"
+   enctype="multipart/form-data">
    @csrf
    @if(session('mensaje'))
    <div class="row">
@@ -63,6 +65,7 @@
       <div class="file-path-wrapper">
         <input class="file-path validate" type="text">
       </div>
+      <span class="red-text text-darken-2">{{$errors->first('imagen')}}</span>
     </div>
     </div>
     <div class="row"> 
@@ -92,6 +95,8 @@
     </div>
     </div>
       <div class="row">
+        <div class="col s12">
+           <div class="row">
         <div class="col s12">
           <div class="row">
         <button class="btn waves-effect waves-light" 

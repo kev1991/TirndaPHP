@@ -25,9 +25,10 @@ class StoreProductoRequest extends FormRequest
     {
              //1. establecer reglas de validación
              return [
-                "nombre" => 'required|alpha',
+                "nombre" => 'required|unique:productos,nombre',
                 "desc" => 'required|max:100',
                 "precio" => 'required|numeric:10000',
+                "imagen" => 'required|image',
                 "categoria" => 'required',
                 "marca" => 'required'
                 ];
@@ -42,7 +43,9 @@ class StoreProductoRequest extends FormRequest
                 'required' => 'dato obligatorio',
                 'alpha' => 'solo letras',
                 'max' => 'max :maxartisan  caracteres',
-                'numeric' => 'Solo números'
+                'numeric' => 'Solo números',
+                'image' => 'solo imagenes',
+                'unique' => 'Ya existe'
         ];
     }
 }

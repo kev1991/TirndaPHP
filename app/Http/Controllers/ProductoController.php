@@ -17,7 +17,11 @@ class ProductoController extends Controller
      */
     public function index()
     {
-        echo "aqui va ir el catalogo de productos";
+        //seleccionar todos los productos con un arreglo
+        $productos = Producto::all();
+        //mostrar la visata del catalogo, llevandole los productos
+        return view('productos.index')
+               -> with('productos', $productos);
     }
 
     /**
@@ -56,7 +60,14 @@ class ProductoController extends Controller
         $p->precio=$request->precio;
         $p->marca_id=$request->marca;
         $p->categoria_id=$request->categoria;
-        $p->save();
+        //objeto file
+        $archivo= $request->imagen;
+        $p->imagen = $archivo->getClientOriginalName();
+        //ruta donde se almacena el archivo
+        $ruta=public_path()."/img";
+        //movemos archivo a ruta
+        $archivo->move($ruta,$archivo->getClientOriginalName() );
+       $p->save();
         //redirecionar: a una ruta disponible
         return redirect('productos/create')
              ->with('mensaje' , "Producto registrado exitosamente");
@@ -86,7 +97,12 @@ class ProductoController extends Controller
      */
     public function show($producto)
     {
-        echo "va a mostrar el detalle de producto";
+        //SELECCIONAR DATOS PARA MOSTRAR
+        $p = Producto::find($producto);
+        //Mostrar la de dtalle de producto
+        //enviandoles el producto seleccionado
+        return view('productos.details')
+               -> with('producto', $p);
     }
 
     /**
