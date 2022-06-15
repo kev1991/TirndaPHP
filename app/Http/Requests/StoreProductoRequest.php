@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreProductoRequest extends FormRequest
+class storeProductoRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,29 +23,28 @@ class StoreProductoRequest extends FormRequest
      */
     public function rules()
     {
-             //1. establecer reglas de validación
-             return [
-                "nombre" => 'required|unique:productos,nombre',
-                "desc" => 'required|max:100',
-                "precio" => 'required|numeric:10000',
-                "imagen" => 'required|image',
-                "categoria" => 'required',
-                "marca" => 'required'
-                ];
-    
+     //1.eestablecer reglas de validacion 
+        return  [
+            "nombre" => 'required|alpha|unique:productos,nombre',
+            "desc"=> 'required|max:100',
+            "precio"=> 'required|numeric|max:10000',
+            "categoria" => 'required',
+            "marca" =>  "required",
+            'imagen' => 'required|image'
+        
+        ];
     }
-
     /**
-     * Mensajes personalizados
+     * mensajes personalizados
      */
     public function messages(){
         return[
-                'required' => 'dato obligatorio',
-                'alpha' => 'solo letras',
-                'max' => 'max :maxartisan  caracteres',
-                'numeric' => 'Solo números',
-                'image' => 'solo imagenes',
-                'unique' => 'Ya existe'
+            'required' =>'dato obligatorio',
+            'alpha'=> 'solo letras',
+            'max' => 'maximo:max caracteres',
+            'numeric'=> 'solo numeros',
+            'image'=> 'Solo archivos con formato jpeg, Jgp, Png, Gif o Pdf',
+            'unique' => 'El nombre  ya existe',
         ];
     }
 }

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Producto;
+
 
 class CartController extends Controller
 {
@@ -13,13 +15,8 @@ class CartController extends Controller
      */
     public function index()
     {
-    if(!session('cart')){
-        echo "No hay items en el carrito";{}
-    }else{
-        return view('cat.index');
+        return view('cart.index');
     }
-    }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -38,37 +35,45 @@ class CartController extends Controller
      */
     public function store(Request $request)
     {
+        
+        //estructura de producto
+        $producto = [ [
 
-        //Estructuro de producto
-        $producto = [    [
-                            "prod_id" => $request->prod_id,
-                            "cantidad" => $request ->cantidad,
-                            "nombre prod" => Producto::find($request->prod_id)->nombre 
-                             ]
-    ];                                  
+        "pro_id" => $request->pro_id ,
+        "precio" => $request->precio,
+        "Cantidad"=> $request->Cantidad, 
+        "nombre_pro"=> Producto::find($request->pro_id)->nombre       
+         ] ];
 
-        if( !session('cart')){
+       
+if(!session('cart')){
 
-            $aux[] = $producto;
-        //1. El primer producto en el carrito
-            session (['cart'=> $producto]); 
+    $aux[] = $producto;
+  //el 1 producto el carrito
+    session(['cart' => $aux]);
 
-        }else{
-            //Extraer los datos del carrito de la variable de sesion
-            $aux = session('cart');
-            //Eliminar la variable de la sesion:
-            session()->forget('cart');
-            //Agregar el nuevo producto a los ya existentes:
-            $aux[] = $producto;
-            //Volver a crear la variable se session con el nuevo producto
-            session(['cart' => $aux]);              
+}else{
+
+
+      //estraer los datos
+      $aux =session('cart');
+      //-eliminar variable session nnnn
+      session()->forget('cart');
+      
+      //agreggar nuevo producto a los ya existentes
+      $aux[] = $producto;
+      //-volver a crear la variable session
+      session(['cart' => $aux]);
+
+}  
+    
+//redireccion al catalogo
+//con mensaje de  añadido
+return redirect('productos')
+->with("mensajito", "Producto añadido con exito");
+
     }
-
-        //2. Redirección al catalogo de productos con mensaje de exito
-        return redirect('productos')
-        -> with("mensajito", "producto añadido");
-
-    }
+    
 
     /**
      * Display the specified resource.
@@ -113,5 +118,6 @@ class CartController extends Controller
     public function destroy($id)
     {
         session()->forget('cart');
+        return redirect('cart');
     }
 }

@@ -13,15 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('productos', function (Blueprint $table) {
+        Schema::create('marcas', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');
-            $table->text('imagen')->nullable();
-            $table->longtext('descrpcion');
-            $table->decimal('precio', 8, 2);
-            $table->foreignId('marca_id')->constrained();
-            $table->foreignId('categoria_id')->constrained();
             $table->timestamps();
+            $table->string('nombre', 50);
         });
     }
 
@@ -32,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('productos');
+        Schema::dropIfExists('marcas');
     }
 };

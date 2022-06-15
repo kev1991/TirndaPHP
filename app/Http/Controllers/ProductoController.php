@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Producto;
 use App\Models\Marca;
 use App\Models\Categoria;
-use App\Http\Requests\StoreProductoRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\storeProductoRequest;
 
 class ProductoController extends Controller
 {
@@ -17,11 +18,13 @@ class ProductoController extends Controller
      */
     public function index()
     {
-        //seleccionar todos los productos con un arreglo
+        //selecciono todos los productos en un arreglo
         $productos = Producto::all();
-        //mostrar la visata del catalogo, llevandole los productos
-        return view('productos.index')
-               -> with('productos', $productos);
+        //mostrar la vista del catalogo llevandole  los productos
+        return view('producto.index')
+        ->with('productos' , $productos);
+
+
     }
 
     /**
@@ -31,14 +34,9 @@ class ProductoController extends Controller
      */
     public function create()
     {
-        //Seleccionar marcas en BD: Model Marca
-         $marcas = Marca::all();
-        //Seleccionar marcas en BD: Model Marca
+        $marcas = Marca::all();
         $categorias = Categoria::all();
-        //Mostar eñ formulario, enviando los datos
-        return view ('productos.create')
-             ->with("marcas" , $marcas)
-             ->with("categorias" , $categorias);
+        return view('producto.create')->with("marcas", $marcas)->with("categorias", $categorias);
     }
 
     /**
@@ -47,46 +45,34 @@ class ProductoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreProductoRequest $request)
+    public function store(storeProductoRequest $request)
     {
 
 
+        //2.crear validacion
+        $p = new Producto();
+        $p->nombre = $request->nombre;
+        $p->desc = $request->desc;
+        $p->precio = $request->precio;
+        $p->marca_id = $request->marca;
+        $p->categoria_id = $request->categoria;
         
-        //validacion exitosa
-           //crear una entidad <<producto>>
-        $p = new producto();
-        $p->nombre=$request->nombre;
-        $p->descrpcion= $request->desc;
-        $p->precio=$request->precio;
-        $p->marca_id=$request->marca;
-        $p->categoria_id=$request->categoria;
         //objeto file
-        $archivo= $request->imagen;
+        $archivo = $request->imagen;
         $p->imagen = $archivo->getClientOriginalName();
         //ruta donde se almacena el archivo
-        $ruta=public_path()."/img";
+        $ruta = public_path()."/img";
         //movemos archivo a ruta
-        $archivo->move($ruta,$archivo->getClientOriginalName() );
-       $p->save();
-        //redirecionar: a una ruta disponible
-        return redirect('productos/create')
-             ->with('mensaje' , "Producto registrado exitosamente");
-
-
-
-        //crear una entidad <<producto>>
-        /*$p = new producto();
-        $p->nombre=$request->nombre;
-        $p->descrpcion= $request->desc;
-        $p->precio=$request->precio;
-        $p->marca_id=$request->marca;
-        $p->categoria_id=$request->categoria;
+        $archivo->move($ruta ,
+                          $archivo->getClientOriginalName());
         $p->save();
-        //redirecionar: a una ruta disponible
+        //redireccionar: a una ruta disponible
         return redirect('productos/create')
-             ->with('mensaje' , "Producto registrado exitosamente");*/
+            ->with('mensaje', "Producto registrado exitosamente");
 
-       
+        
+        
+
     }
 
     /**
@@ -97,12 +83,11 @@ class ProductoController extends Controller
      */
     public function show($producto)
     {
-        //SELECCIONAR DATOS PARA MOSTRAR
+        //seleccionar el producto
         $p = Producto::find($producto);
-        //Mostrar la de dtalle de producto
-        //enviandoles el producto seleccionado
-        return view('productos.details')
-               -> with('producto', $p);
+        //mostrar la vista del producto elegido
+        return view('producto.details')
+        ->with('producto' , $p);
     }
 
     /**
@@ -113,7 +98,7 @@ class ProductoController extends Controller
      */
     public function edit($producto)
     {
-        echo "se muestra el formulario de editar";
+        echo "Aquí se muestra el form de editar producto.";
     }
 
     /**
@@ -125,7 +110,7 @@ class ProductoController extends Controller
      */
     public function update(Request $request, Producto $producto)
     {
-        echo "guarda el producto editado";
+        echo "Guarda el producto editado.";
     }
 
     /**
@@ -136,6 +121,6 @@ class ProductoController extends Controller
      */
     public function destroy(Producto $producto)
     {
-        echo "eliminar el producto";
-}
+        echo "Eliminar el producto.";
+    }
 }
